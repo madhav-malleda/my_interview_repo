@@ -1,0 +1,1826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Engineering Interview Prep - 22 Questions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0f1419;
+            color: #e0e0e0;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 320px;
+            background: #1a1f2e;
+            border-right: 1px solid #2d3748;
+            overflow-y: auto;
+            padding: 20px 0;
+        }
+
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 2px solid #2d748f;
+            margin-bottom: 20px;
+        }
+
+        .sidebar-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #42a5f5;
+            margin-bottom: 8px;
+        }
+
+        .sidebar-subtitle {
+            font-size: 12px;
+            color: #90caf9;
+        }
+
+        .search-box {
+            padding: 0 20px 20px;
+            margin-bottom: 10px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #2d3748;
+            background: #0f1419;
+            color: #e0e0e0;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #42a5f5;
+            box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.1);
+        }
+
+        .question-list {
+            list-style: none;
+        }
+
+        .question-item {
+            padding: 12px 15px;
+            margin: 0 10px 5px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .question-item:hover {
+            background: #2d3748;
+            border-left-color: #42a5f5;
+        }
+
+        .question-item.active {
+            background: #1e3a5f;
+            border-left-color: #42a5f5;
+            color: #42a5f5;
+        }
+
+        .question-item-number {
+            font-weight: 700;
+            color: #42a5f5;
+            font-size: 12px;
+            margin-right: 8px;
+        }
+
+        .question-item-title {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .question-item-time {
+            font-size: 11px;
+            color: #90caf9;
+            margin-top: 4px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .content-header {
+            padding: 20px;
+            background: #1a1f2e;
+            border-bottom: 1px solid #2d3748;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .content-header h1 {
+            font-size: 20px;
+            color: #e0e0e0;
+        }
+
+        .content-header p {
+            font-size: 13px;
+            color: #90caf9;
+            margin-top: 4px;
+        }
+
+        .progress-bar {
+            height: 3px;
+            background: #2d3748;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #42a5f5, #66bb6a);
+            transition: width 0.3s ease;
+        }
+
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 30px;
+            background: #0f1419;
+        }
+
+        .question-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .question-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .question-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #42a5f5;
+            margin-bottom: 10px;
+        }
+
+        .question-subtitle {
+            font-size: 14px;
+            color: #90caf9;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #2d3748;
+            padding-bottom: 15px;
+        }
+
+        .key-points {
+            background: #1a1f2e;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border-left: 3px solid #42a5f5;
+        }
+
+        .key-points h3 {
+            font-size: 12px;
+            color: #42a5f5;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .key-points ul {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .key-points li {
+            font-size: 13px;
+            color: #e0e0e0;
+            padding: 6px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .key-points li:before {
+            content: "▸";
+            position: absolute;
+            left: 5px;
+            color: #66bb6a;
+            font-weight: bold;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            gap: 15px;
+        }
+
+        .nav-button {
+            flex: 1;
+            padding: 12px 20px;
+            background: #1a1f2e;
+            border: 1px solid #2d3748;
+            color: #42a5f5;
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .nav-button:hover:not(:disabled) {
+            background: #2d3748;
+            border-color: #42a5f5;
+        }
+
+        .nav-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .empty-state {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            flex-direction: column;
+            color: #90caf9;
+        }
+
+        .empty-state svg {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            background: #1a1f2e;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .stat {
+            flex: 1;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #42a5f5;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #90caf9;
+            margin-top: 4px;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                max-height: 40vh;
+                border-right: none;
+                border-bottom: 1px solid #2d3748;
+            }
+
+            .container {
+                flex-direction: column;
+            }
+
+            .main-content {
+                height: auto;
+            }
+
+            .content-area {
+                padding: 20px;
+            }
+
+            .question-title {
+                font-size: 20px;
+            }
+
+            .question-item-title {
+                font-size: 12px;
+            }
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0f1419;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #2d3748;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3d4758;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-title">📚 Interview Prep</div>
+                <div class="sidebar-subtitle">22 Questions · 137 min read</div>
+            </div>
+            
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search questions...">
+            </div>
+
+            <ul class="question-list" id="questionList"></ul>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="content-header">
+                <div>
+                    <h1 id="currentTitle">Data Engineering Interview Prep</h1>
+                    <p id="currentSubtitle">Select a question to get started</p>
+                </div>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <div class="content-area" id="contentArea">
+                <div class="empty-state">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2v20M2 12h20M4.22 4.22l14.24 14.24M19.78 4.22L5.54 18.46"></path>
+                    </svg>
+                    <p>Select a question from the sidebar to begin</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Full content for all 22 questions
+        const allQuestions = {
+            1: {
+                title: "Spark Cluster Types: Deep Dive",
+                subtitle: "Standalone, YARN, Kubernetes - Architecture & Performance",
+                time: "8 min read",
+                keyPoints: ["Understand trade-offs", "Standalone: simple, <100 nodes", "YARN: shared, multi-tenant", "K8s: cloud-native, auto-scaling"],
+                content: `
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">3</div>
+                            <div class="stat-label">Main Types</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">8 min</div>
+                            <div class="stat-label">Read Time</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">Senior</div>
+                            <div class="stat-label">Level</div>
+                        </div>
+                    </div>
+                    
+                    <h2>Overview</h2>
+                    <p>A Spark cluster is a distributed computing architecture that processes large-scale data in parallel. Choosing the right cluster manager determines resource allocation, fault tolerance, scalability, and operational overhead.</p>
+
+                    <h3>Key Comparison:</h3>
+                    <ul>
+                        <li><strong>Standalone:</strong> Simple master-worker, best for <100 nodes, minimal overhead</li>
+                        <li><strong>YARN:</strong> Multi-tenant, complex setup, >100 nodes, enterprise deployments</li>
+                        <li><strong>Kubernetes:</strong> Cloud-native, auto-scaling, modern DevOps approach</li>
+                    </ul>
+
+                    <h3>When to Use Each:</h3>
+                    <ul>
+                        <li><strong>Standalone:</strong> Dedicated infrastructure, operational simplicity priority</li>
+                        <li><strong>YARN:</strong> Shared cluster, Hadoop ecosystem, complex resource management</li>
+                        <li><strong>Kubernetes:</strong> Cloud-first, auto-scaling needed, containerized infrastructure</li>
+                    </ul>
+
+                    <p><strong>Interview Answer:</strong> "The choice depends on infrastructure type and operational complexity. For cloud-first, Kubernetes provides best cost optimization. For on-premises multi-tenant, YARN. For dedicated Spark clusters, Standalone eliminates unnecessary complexity."</p>
+                `
+            },
+            2: {
+                title: "SQL Joins: Comprehensive Explanation",
+                subtitle: "INNER, LEFT, RIGHT, FULL, CROSS, SEMI, ANTI - Row Count Formulas",
+                time: "6 min read",
+                keyPoints: ["INNER: matching rows only", "LEFT: all left + matching right", "CROSS: m × n cartesian", "SEMI/ANTI: for efficiency"],
+                content: `
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">7</div>
+                            <div class="stat-label">Join Types</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">Formulas</div>
+                            <div class="stat-label">Included</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">6 min</div>
+                            <div class="stat-label">Read Time</div>
+                        </div>
+                    </div>
+
+                    <h2>Row Count Formulas (Table A: m rows, Table B: n rows)</h2>
+                    
+                    <h3>INNER JOIN</h3>
+                    <p><strong>Row Count:</strong> 0 to m (matching rows only)</p>
+                    <p>Returns only rows where join condition matches. No NULLs, only exact matches.</p>
+
+                    <h3>LEFT JOIN</h3>
+                    <p><strong>Row Count:</strong> Exactly m (all left table rows guaranteed)</p>
+                    <p>All rows from left table, with NULLs for non-matching rows from right.</p>
+
+                    <h3>RIGHT JOIN</h3>
+                    <p><strong>Row Count:</strong> Exactly n (all right table rows guaranteed)</p>
+
+                    <h3>FULL OUTER JOIN</h3>
+                    <p><strong>Row Count:</strong> max(m,n) to m+n</p>
+                    <p>All rows from both tables, NULLs where no match exists.</p>
+
+                    <h3>CROSS JOIN</h3>
+                    <p><strong>Row Count:</strong> Exactly m × n (ALWAYS guaranteed)</p>
+                    <p>Cartesian product: every combination.</p>
+
+                    <h3>SEMI & ANTI JOINS</h3>
+                    <p><strong>SEMI:</strong> Left rows with at least one match (no duplication)</p>
+                    <p><strong>ANTI:</strong> Left rows with NO match (finding missing data)</p>
+
+                    <h3>Common Performance Issues:</h3>
+                    <ul>
+                        <li>Row explosion when one left row matches multiple right rows</li>
+                        <li>Data skew causing some tasks to take much longer</li>
+                        <li>Solution: Salt skewed keys with random numbers before join</li>
+                    </ul>
+                `
+            },
+            3: {
+                title: "Teachers Table Queries",
+                subtitle: "SQL Implementation - Teaching Only Math & Multiple Subjects",
+                time: "4 min read",
+                keyPoints: ["GROUP BY + HAVING more efficient", "COUNT(DISTINCT subject)", "Performance optimized"],
+                content: `
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">2</div>
+                            <div class="stat-label">Queries</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">Performance</div>
+                            <div class="stat-label">Focused</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">4 min</div>
+                            <div class="stat-label">Read Time</div>
+                        </div>
+                    </div>
+
+                    <h2>Query 1: Teachers Teaching ONLY Maths</h2>
+                    <p><strong>Better Approach (GROUP BY + HAVING):</strong></p>
+                    <code style="background: #1a1f2e; padding: 10px; border-radius: 4px; display: block; margin: 10px 0;">
+SELECT id, name, 'Maths' as subject<br>
+FROM Teachers<br>
+GROUP BY id, name<br>
+HAVING COUNT(DISTINCT subject) = 1<br>
+AND MAX(CASE WHEN subject = 'Maths' THEN 1 ELSE 0 END) = 1;
+                    </code>
+                    <p><strong>Why Better:</strong> Single table scan vs. NOT EXISTS with potential full scan. More SQL engine friendly.</p>
+
+                    <h2>Query 2: Teachers Teaching Multiple Subjects</h2>
+                    <code style="background: #1a1f2e; padding: 10px; border-radius: 4px; display: block; margin: 10px 0;">
+SELECT id, name, COUNT(DISTINCT subject) as subject_count<br>
+FROM Teachers<br>
+GROUP BY id, name<br>
+HAVING COUNT(DISTINCT subject) > 1<br>
+ORDER BY subject_count DESC;
+                    </code>
+                    
+                    <h3>Key Optimization Points:</h3>
+                    <ul>
+                        <li>Use GROUP BY with aggregates for efficiency</li>
+                        <li>HAVING clause filters post-aggregation (not before)</li>
+                        <li>COUNT(DISTINCT) counts unique values</li>
+                        <li>More performant than correlated subqueries</li>
+                    </ul>
+                `
+            },
+            4: {
+                title: "Liquid Clustering",
+                subtitle: "Self-Tuning Data Organization - 2.5x Faster than Z-Order",
+                time: "5 min read",
+                keyPoints: ["Self-tuning, adapts to queries", "2.5x faster than Z-Order", "Ideal for evolving patterns"],
+                content: `
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">2.5x</div>
+                            <div class="stat-label">Faster</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">Auto</div>
+                            <div class="stat-label">Adaptive</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">5 min</div>
+                            <div class="stat-label">Read Time</div>
+                        </div>
+                    </div>
+
+                    <h2>What is Liquid Clustering?</h2>
+                    <p>A self-tuning, automatic data organization technique that incrementally clusters data as it's written, without expensive shuffle operations.</p>
+
+                    <h2>Why Use It?</h2>
+                    <p><strong>Traditional Partitioning Problems:</strong></p>
+                    <ul>
+                        <li>Fixed scheme can't adapt when query patterns change</li>
+                        <li>Over-partitioning creates small files problem</li>
+                        <li>Under-partitioning creates hot partitions with skew</li>
+                    </ul>
+
+                    <p><strong>Liquid Clustering Solves:</strong></p>
+                    <ul>
+                        <li>Self-tuning based on actual query patterns</li>
+                        <li>No shuffle overhead during write</li>
+                        <li>Skew-resistant with consistent file sizes</li>
+                        <li>Dynamically adapts to new access patterns</li>
+                    </ul>
+
+                    <h2>How It Works</h2>
+                    <p>Assigns hash values based on clustering columns → similar hash values colocated → files organized hierarchically → new data placed by hash value.</p>
+
+                    <h2>Performance Benchmark</h2>
+                    <ul>
+                        <li>1TB workload: 2.5x faster than Z-Order clustering</li>
+                        <li>Query performance: 20-30% faster vs. partitioned tables</li>
+                        <li>Write performance: <5% overhead</li>
+                    </ul>
+
+                    <h2>When to Use</h2>
+                    <ul>
+                        <li>✅ Unpredictable query patterns</li>
+                        <li>✅ High-cardinality columns (customer_id, user_id)</li>
+                        <li>✅ Time-series with range queries</li>
+                        <li>❌ Tables < 100MB</li>
+                        <li>❌ Write-optimized workloads</li>
+                    </ul>
+                `
+            },
+            5: {
+                title: "AutoLoader",
+                subtitle: "Continuous File Detection - Directory Listing vs File Events Mode",
+                time: "7 min read",
+                keyPoints: ["Incremental discovery", "Checkpoint-based state", "5-10 min optimal frequency"],
+                content: `
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">2</div>
+                            <div class="stat-label">Detection Modes</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">Incremental</div>
+                            <div class="stat-label">Processing</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">7 min</div>
+                            <div class="stat-label">Read Time</div>
+                        </div>
+                    </div>
+
+                    <h2>What is AutoLoader?</h2>
+                    <p>Databricks' incremental file discovery and ingestion engine that automatically detects new files and processes only new ones, eliminating redundant processing.</p>
+
+                    <h2>Problem with Traditional Spark</h2>
+                    <ul>
+                        <li>Scans ALL files every time (expensive API calls)</li>
+                        <li>No checkpointing - reruns entire exploration</li>
+                        <li>Doesn't know which files already processed</li>
+                        <li>Becomes prohibitively slow as files accumulate</li>
+                    </ul>
+
+                    <h2>Two Detection Modes</h2>
+                    
+                    <h3>1. Directory Listing Mode (Traditional)</h3>
+                    <p>Maintains checkpoint with last discovery position. Only lists new files since last run.</p>
+                    <p><strong>API Optimization:</strong> Traditional lists 8761+ directories; AutoLoader lists ~50 files = 1 API call</p>
+
+                    <h3>2. File Events Mode (Cloud-Native) - Recommended</h3>
+                    <p>Integrates with cloud storage notifications (S3 EventBridge, GCS Pub/Sub, ADLS Events). Truly event-driven, no polling.</p>
+
+                    <h2>Optimal Frequency</h2>
+                    <ul>
+                        <li><strong>Real-time Analytics:</strong> 1-2 min intervals (higher cost)</li>
+                        <li><strong>Near Real-time ETL:</strong> 5-10 min intervals (balanced)</li>
+                        <li><strong>Batch Workloads:</strong> 1 hour or schedule-based (cost-optimized)</li>
+                        <li><strong>High-Frequency:</strong> File events mode (eliminates polling)</li>
+                    </ul>
+
+                    <h2>How AutoLoader Knows When Files Are Added</h2>
+                    <p><strong>Checkpoint Mechanism:</strong> Stores last_listing_timestamp, files_processed, and read_position. On next trigger, lists only files newer than checkpoint timestamp.</p>
+
+                    <h2>Critical Feature: Exactly-Once Processing</h2>
+                    <p>Even if job crashes, checkpoint prevents reprocessing. Restart picks up from exact position where it crashed.</p>
+                `
+            },
+            6: {
+                title: "Spark Execution Architecture",
+                subtitle: "SparkSession vs SparkContext - Entry Points & Architecture",
+                time: "6 min read",
+                keyPoints: ["SparkSession: modern preferred", "SparkContext: legacy", "Driver → Executors"],
+                content: `
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">2</div>
+                            <div class="stat-label">Entry Points</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">Modern</div>
+                            <div class="stat-label">Approach</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">6 min</div>
+                            <div class="stat-label">Read Time</div>
+                        </div>
+                    </div>
+
+                    <h2>Level 1: SparkContext (Legacy, Low-Level)</h2>
+                    <p>Connects to cluster manager, allocates executors, creates and manages RDDs, directly executes transformations without optimization.</p>
+                    <p><strong>When Used:</strong> Unstructured data, custom transformations, legacy code, maximum control needed</p>
+
+                    <h2>Level 2: SparkSession (Modern, Unified - Preferred Since Spark 2.0)</h2>
+                    <p>Encapsulates SparkContext, creates DataFrames (structured), executes Catalyst-optimized queries, manages SQL/streaming/ML.</p>
+                    <p><strong>Key Advantage:</strong> Catalyst Optimizer automatically optimizes DataFrames before execution</p>
+
+                    <h2>Level 3: Complete Spark Cluster Architecture</h2>
+                    <p>Interview Question Often Asks: Explain entire execution flow from session creation to task execution on executors.</p>
+
+                    <h3>Flow:</h3>
+                    <ul>
+                        <li>Client creates SparkSession</li>
+                        <li>SparkSession connects to Cluster Manager</li>
+                        <li>Cluster Manager negotiates resources</li>
+                        <li>Executors allocated on Worker nodes</li>
+                        <li>Tasks distributed and executed in parallel</li>
+                    </ul>
+
+                    <h3>Key Components Interaction:</h3>
+                    <ul>
+                        <li><strong>Driver:</strong> Coordinates overall execution</li>
+                        <li><strong>DAG Scheduler:</strong> Creates logical execution plan</li>
+                        <li><strong>Task Scheduler:</strong> Assigns tasks to executors</li>
+                        <li><strong>Executors:</strong> Execute actual tasks</li>
+                    </ul>
+
+                    <p><strong>Interview Answer:</strong> "SparkSession is the modern entry point that encapsulates SparkContext. It creates DataFrames, leverages Catalyst optimizer, and coordinates execution across cluster manager to executors. This unified interface simplifies distributed data processing compared to legacy RDD-based SparkContext approach."</p>
+                `
+            },
+            7: {
+                title: "Spark Architecture in Detail",
+                subtitle: "Driver, DAG Scheduler, Task Scheduler, Executors, BlockManager",
+                time: "8 min read",
+                keyPoints: ["Driver coordinates", "DAG Scheduler creates stages", "Task Scheduler assigns tasks"],
+                content: `
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">5</div>
+                            <div class="stat-label">Components</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">Deep Dive</div>
+                            <div class="stat-label">Included</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">8 min</div>
+                            <div class="stat-label">Read Time</div>
+                        </div>
+                    </div>
+
+                    <h2>Driver Program (SparkSession/SparkContext on Client)</h2>
+                    <p><strong>Responsibilities:</strong></p>
+                    <ul>
+                        <li>Session management and configuration</li>
+                        <li>Job submission from user code</li>
+                        <li>DAG construction (logical execution plan)</li>
+                        <li>Optimization via Catalyst optimizer</li>
+                        <li>Task scheduling and resource coordination</li>
+                        <li>Monitoring, metrics, and result collection</li>
+                    </ul>
+                    <p><strong>Memory:</strong> Configured via spark.driver.memory (default: 1g). Stores entire execution plan.</p>
+
+                    <h2>Cluster Manager (Standalone/YARN/Kubernetes)</h2>
+                    <p><strong>Role:</strong> Resource negotiation and task placement</p>
+                    <ul>
+                        <li>YARN ResourceManager: Allocates containers</li>
+                        <li>Standalone Master: Assigns cores and memory</li>
+                        <li>Kubernetes API: Manages Pod lifecycle</li>
+                    </ul>
+
+                    <h2>Executors (Worker JVMs)</h2>
+                    <p><strong>What They Do:</strong></p>
+                    <ul>
+                        <li>Execute assigned Spark tasks</li>
+                        <li>Store cached RDDs/DataFrames in memory</li>
+                        <li>Participate in shuffle operations</li>
+                        <li>Report task status back to driver</li>
+                    </ul>
+                    <p><strong>Memory Breakdown:</strong> 60% execution, 40% storage, 300MB system overhead</p>
+
+                    <h2>DAG Scheduler (Logical Plan → Stages)</h2>
+                    <p>Converts RDD/DataFrame transformations into DAG. Identifies wide transformations and breaks DAG into stages at shuffle boundaries.</p>
+
+                    <h2>Task Scheduler (Stages → Tasks)</h2>
+                    <p>Converts stages into individual tasks, determines executor placement using locality, load balancing, and resource availability. One task per partition.</p>
+
+                    <h2>BlockManager (Memory & Storage)</h2>
+                    <p><strong>Manages:</strong></p>
+                    <ul>
+                        <li>Cached data (RDDs/DataFrames)</li>
+                        <li>Shuffle intermediate data</li>
+                        <li>Memory spillage to disk when full</li>
+                        <li>Block replication for fault tolerance</li>
+                    </ul>
+                `
+            },
+            8: {
+                title: "DAG & Execution Flow",
+                subtitle: "Lazy Evaluation, Stages, Shuffle Boundaries, Optimization",
+                time: "6 min read",
+                keyPoints: ["Transformations lazy", "Actions trigger execution", "Stages separated at shuffles"],
+                content: `
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">Lazy</div>
+                            <div class="stat-label">Evaluation</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">Multi-Stage</div>
+                            <div class="stat-label">Execution</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">6 min</div>
+                            <div class="stat-label">Read Time</div>
+                        </div>
+                    </div>
+
+                    <h2>DAG Construction (Lazy Evaluation)</h2>
+                    <p>Transformations are NOT executed immediately - only actions trigger execution.</p>
+
+                    <h2>What Actually Happens</h2>
+                    <ol>
+                        <li>Transformations are lazily stacked</li>
+                        <li>Only .collect(), .write(), .show() action triggers execution</li>
+                        <li>Driver constructs DAG showing dependencies</li>
+                        <li>DAG Scheduler breaks into stages</li>
+                    </ol>
+
+                    <h2>Stage Separation (Shuffle Boundaries)</h2>
+                    <p><strong>Shuffle-Causing Operations:</strong> groupBy(), join(), reduceByKey(), repartition(), distinct(), sortBy()</p>
+
+                    <h2>Actual Execution Order</h2>
+                    <ol>
+                        <li>Driver Submits Job (action triggered)</li>
+                        <li>DAG Scheduler Creates Stages (splits at shuffle boundaries)</li>
+                        <li>Task Scheduler Assigns Tasks (one task per partition)</li>
+                        <li>Stage 1 Executes (all tasks must complete)</li>
+                        <li>Shuffle Phase (executors exchange data across network)</li>
+                        <li>Stage 2 Executes (on shuffled data)</li>
+                        <li>Collection (results sent back to driver)</li>
+                    </ol>
+
+                    <h2>Optimization Inside DAG</h2>
+                    <p><strong>Catalyst Optimizer applies:</strong></p>
+                    <ul>
+                        <li>Predicate Pushdown: Filters moved as early as possible</li>
+                        <li>Column Pruning: Select only needed columns</li>
+                        <li>Join Reordering: Optimal execution sequence</li>
+                    </ul>
+
+                    <p><strong>Interview Answer:</strong> "Spark uses lazy evaluation - transformations queue up, and only actions trigger execution. DAG Scheduler creates stages separated at shuffle boundaries. Catalyst optimizes the logical plan with predicate pushdown and column pruning, then Task Scheduler assigns tasks to executors for parallel execution."</p>
+                `
+            },
+            9: {
+                title: "Catalyst Optimizer",
+                subtitle: "Query Optimization - Predicate Pushdown, Column Pruning, Join Reordering",
+                time: "7 min read",
+                keyPoints: ["Rule-based + Cost-based", "99% data reduction possible", "Physical plan generation"],
+                content: `
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">4</div>
+                            <div class="stat-label">Phases</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">Automatic</div>
+                            <div class="stat-label">Optimization</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">7 min</div>
+                            <div class="stat-label">Read Time</div>
+                        </div>
+                    </div>
+
+                    <h2>What Does Catalyst Actually Do?</h2>
+                    <p>Automatic query optimizer that converts user-written queries into highly efficient execution plans.</p>
+
+                    <h2>Four Optimization Phases</h2>
+
+                    <h3>Phase 1: Logical Plan Analysis</h3>
+                    <p>Parse query into logical operations: Join → Filter → GroupBy</p>
+
+                    <h3>Phase 2: Logical Optimization (Rule-Based)</h3>
+                    <p><strong>Predicate Pushdown:</strong> Move filters as early as possible (before joins)</p>
+                    <ul>
+                        <li>BEFORE: Join 1B rows, then filter to 10M</li>
+                        <li>AFTER: Filter to 10M first, then join 10M rows</li>
+                    </ul>
+
+                    <h3>Phase 3: Cost-Based Optimization (CBO)</h3>
+                    <p>Uses table statistics to make better decisions:</p>
+                    <ul>
+                        <li>Broadcast vs Sort-Merge Join: Based on table sizes</li>
+                        <li>Join Order: Reorder joins to process smallest first</li>
+                        <li>Partitioning Strategy: Best shuffle approach</li>
+                    </ul>
+
+                    <h3>Phase 4: Physical Plan Generation</h3>
+                    <p>Converts logical to physical plan with actual operators (BroadcastHashJoin, HashAggregate, ParquetScan)</p>
+
+                    <h2>Real Performance Impact</h2>
+                    <p><strong>Without Catalyst:</strong> Process 1 billion rows, join all, filter removes 99%</p>
+                    <p><strong>With Catalyst:</strong> Filter applied immediately, only 10 million rows reach join</p>
+                    <p><strong>Result:</strong> 99% fewer data movements!</p>
+
+                    <p><strong>Interview Answer:</strong> "Catalyst is Spark's automatic optimizer with 4 phases: logical analysis, rule-based optimization (predicate pushdown, column pruning), cost-based optimization (using statistics), and physical plan generation. It enables 99% data reduction in some cases by filtering early and reordering operations."</p>
+                `
+            },
+            10: {
+                title: "SQL Query Optimization",
+                subtitle: "Execution Plan Analysis, Query Rewrite, Performance Tuning",
+                time: "8 min read",
+                keyPoints: ["Identify bottlenecks", "Execution plan analysis", "Predicate pushdown"],
+                content: `
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">4</div>
+                            <div class="stat-label">Steps</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">Techniques</div>
+                            <div class="stat-label">Included</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">8 min</div>
+                            <div class="stat-label">Read Time</div>
+                        </div>
+                    </div>
+
+                    <h2>Step 1: Identify Slow Queries</h2>
+                    <ul>
+                        <li>SQL Server: Ctrl+M for Actual Execution Plan</li>
+                        <li>Key Metrics: IO Statistics, CPU Time, Elapsed Time, Rows Affected</li>
+                    </ul>
+
+                    <h2>Step 2: Analyze Execution Plan</h2>
+                    <p><strong>Red Flags:</strong></p>
+                    <ul>
+                        <li>Full Table Scans → Add/improve index</li>
+                        <li>Sort Operations → Add index on sort column</li>
+                        <li>Hash Match with spill → Increase memory</li>
+                        <li>Nested Loops (large inner table) → Use hash or sort-merge</li>
+                    </ul>
+
+                    <h2>Step 3: Query Rewrite Optimization</h2>
+
+                    <h3>Technique 1: JOIN Order Matters</h3>
+                    <p><strong>BAD:</strong> Join large to large first, then filter</p>
+                    <p><strong>GOOD:</strong> Filter first, then join reduced dataset</p>
+
+                    <h3>Technique 2: Avoid Cursors</h3>
+                    <p><strong>BAD:</strong> Row-by-row cursor processing (N+1 problem)</p>
+                    <p><strong>GOOD:</strong> Set-based SQL operations</p>
+
+                    <h3>Technique 3: Aggregate Early</h3>
+                    <p><strong>BAD:</strong> Aggregate after join explosion</p>
+                    <p><strong>GOOD:</strong> Aggregate before join (reduces rows)</p>
+
+                    <h2>Step 4: Index-Based Optimization</h2>
+                    <p>Create strategic indexes on:</p>
+                    <ul>
+                        <li>WHERE clause columns</li>
+                        <li>JOIN condition columns</li>
+                        <li>Composite indexes for common filter combinations</li>
+                    </ul>
+
+                    <h2>Real Example</h2>
+                    <p><strong>BEFORE: 45 seconds</strong><br>
+                    SELECT * FROM orders WHERE customer_id=X AND date>Y</p>
+                    <p><strong>AFTER: 2 seconds (22x faster)</strong><br>
+                    Added index on (date, customer_id) + predicate pushdown + column selection</p>
+
+                    <p><strong>Interview Answer:</strong> "Optimization starts with capturing the execution plan. Look for full table scans, spills, and nested loops. Rewrite queries by filtering early, using set-based operations instead of cursors, and aggregating before joins. Finally, create strategic indexes on frequently filtered columns."</p>
+                `
+            },
+            11: {
+                title: "Indexes: Performance Impact",
+                subtitle: "Do Indexes Help? Myths Debunked",
+                time: "5 min read",
+                keyPoints: ["Reduce SELECT runtime", "Increase INSERT/UPDATE cost", "10-30% storage overhead"],
+                content: `
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">YES</div>
+                            <div class="stat-label">Help</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">Trade-offs</div>
+                            <div class="stat-label">Exist</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">5 min</div>
+                            <div class="stat-label">Read Time</div>
+                        </div>
+                    </div>
+
+                    <h2>Do Indexes Actually Help Query Performance?</h2>
+                    <p><strong>Simple Answer:</strong> YES, when properly designed. NO, if poorly designed.</p>
+
+                    <h2>Reality Check</h2>
+                    <ul>
+                        <li>✅ Indexes REDUCE query runtime for SELECT with WHERE clauses</li>
+                        <li>❌ Indexes INCREASE write runtime (INSERT/UPDATE/DELETE must update index)</li>
+                        <li>❌ Indexes INCREASE storage (10-30% depending on columns)</li>
+                    </ul>
+
+                    <h2>When Indexes DON'T Help</h2>
+                    <ul>
+                        <li>Low-cardinality columns (few unique values)</li>
+                        <li>Columns with NULL values (can't be efficiently indexed)</li>
+                        <li>Frequently updated columns (maintenance overhead)</li>
+                        <li>Small tables where full scan is faster</li>
+                    </ul>
+
+                    <h2>When Indexes REALLY Help</h2>
+                    <ul>
+                        <li>High-cardinality columns (customer_id, order_id)</li>
+                        <li>WHERE clause filters on large tables</li>
+                        <li>JOIN conditions</li>
+                        <li>Range queries (dates, amounts)</li>
+                    </ul>
+
+                    <h2>Index Trade-offs</h2>
+                    <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+                        <tr style="border-bottom: 1px solid #2d3748;">
+                            <td style="padding: 10px;"><strong>Benefit</strong></td>
+                            <td style="padding: 10px;"><strong>Cost</strong></td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #2d3748;">
+                            <td style="padding: 10px;">Faster SELECT queries</td>
+                            <td style="padding: 10px;">Slower INSERT/UPDATE/DELETE</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px;">Reduced disk I/O</td>
+                            <td style="padding: 10px;">10-30% more storage</td>
+                        </tr>
+                    </table>
+
+                    <p><strong>Interview Answer:</strong> "Indexes absolutely help query performance for SELECT operations by reducing disk I/O and enabling faster lookups. However, they have trade-offs: they slow down writes because the index must be updated, and they consume 10-30% additional storage. The key is creating indexes on the right columns - high-cardinality columns in WHERE clauses and JOIN conditions provide the best ROI."</p>
+                `
+            },
+            12: {
+                title: "Clustered vs Non-Clustered Index",
+                subtitle: "How They Work, When to Create, Column Selection Strategy",
+                time: "7 min read",
+                keyPoints: ["Clustered: physical sort", "Non-clustered: pointer", "Decision matrix provided"],
+                content: `
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">2</div>
+                            <div class="stat-label">Types</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">Detailed</div>
+                            <div class="stat-label">Comparison</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">7 min</div>
+                            <div class="stat-label">Read Time</div>
+                        </div>
+                    </div>
+
+                    <h2>CLUSTERED INDEX</h2>
+                    <p><strong>Definition:</strong> The physical sort order of the table itself</p>
+                    <ul>
+                        <li>Rows physically sorted in disk by index key</li>
+                        <li>Leaf level contains actual data pages</li>
+                        <li>Only ONE per table (rows have one physical order)</li>
+                        <li>FASTEST for range queries</li>
+                    </ul>
+
+                    <h2>NON-CLUSTERED INDEX</h2>
+                    <p><strong>Definition:</strong> A separate sorted list pointing to actual data</p>
+                    <ul>
+                        <li>Stored separately from table data</li>
+                        <li>Leaf level has index key + row pointer</li>
+                        <li>Can have multiple (up to 999) per table</li>
+                        <li>Must perform lookup to retrieve full row</li>
+                    </ul>
+
+                    <h2>When to Create Which Type</h2>
+                    <table style="width: 100%; border-collapse: collapse; margin: 15px 0; font-size: 13px;">
+                        <tr style="border-bottom: 1px solid #2d3748;">
+                            <td style="padding: 10px;"><strong>Scenario</strong></td>
+                            <td style="padding: 10px;"><strong>Type</strong></td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #2d3748;">
+                            <td style="padding: 10px;">Primary key lookups</td>
+                            <td style="padding: 10px;">Clustered</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #2d3748;">
+                            <td style="padding: 10px;">Range queries (dates)</td>
+                            <td style="padding: 10px;">Clustered</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #2d3748;">
+                            <td style="padding: 10px;">WHERE clause filtering</td>
+                            <td style="padding: 10px;">Non-clustered</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #2d3748;">
+                            <td style="padding: 10px;">JOIN conditions</td>
+                            <td style="padding: 10px;">Non-clustered</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px;">Composite filter conditions</td>
+                            <td style="padding: 10px;">Composite Non-clustered</td>
+                        </tr>
+                    </table>
+
+                    <h2>Composite Index Strategy</h2>
+                    <p><strong>Example:</strong> Queries filtering by customer_id AND status</p>
+                    <p>Create: (customer_id, status) with INCLUDE (amount)</p>
+                    <p><strong>Why:</strong> Equality first (customer_id narrows down), then status. INCLUDE avoids row lookup.</p>
+
+                    <p><strong>Interview Answer:</strong> "Clustered index defines physical table order - one per table. Non-clustered are separate pointers - many per table. Use clustered for primary lookups and range queries. Use non-clustered for WHERE filters and JOINs. For composite conditions, put equality columns first, then range columns. INCLUDE clause avoids row lookups."</p>
+                `
+            },
+            13: {
+                title: "ADF vs Databricks Orchestration",
+                subtitle: "Which Tool Does What - Architecture & Integration",
+                time: "6 min read",
+                keyPoints: ["ADF: orchestrates, schedules", "Databricks: computes", "ADF calls Databricks"],
+                content: `
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">2</div>
+                            <div class="stat-label">Tools</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">Integration</div>
+                            <div class="stat-label">Patterns</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">6 min</div>
+                            <div class="stat-label">Read Time</div>
+                        </div>
+                    </div>
+
+                    <h2>Short Answer</h2>
+                    <p><strong>Azure Data Factory is the orchestration engine. Databricks is the compute engine.</strong></p>
+
+                    <h2>Azure Data Factory - The Orchestrator</h2>
+                    <p><strong>Excels At:</strong></p>
+                    <ul>
+                        <li>Scheduling (time-based, event-based, manual triggers)</li>
+                        <li>Dependency management (run A, wait for success, then run B)</li>
+                        <li>Multi-service orchestration (SQL + Databricks + Synapse)</li>
+                        <li>Monitoring & alerting dashboard</li>
+                        <li>Error handling (retry policies, notifications)</li>
+                    </ul>
+
+                    <h2>Databricks - The Compute Engine</h2>
+                    <p><strong>Excels At:</strong></p>
+                    <ul>
+                        <li>Data processing and transformations</li>
+                        <li>ML workloads</li>
+                        <li>Streaming analytics</li>
+                        <li>Interactive development (notebooks)</li>
+                    </ul>
+
+                    <h2>Architecture: ADF Orchestrating Databricks</h2>
+                    <p>Pipeline: DailyETL</p>
+                    <ul>
+                        <li>Trigger: Daily 2 AM</li>
+                        <li>Activity 1: Copy CSV → ADLS</li>
+                        <li>Activity 2: Execute Databricks Notebook</li>
+                        <li>Activity 3: Copy results → Data Warehouse</li>
+                        <li>Activity 4: Send notification</li>
+                    </ul>
+
+                    <h2>When to Use Which</h2>
+                    <p><strong>Simple Databricks Only:</strong> Use Databricks Jobs directly</p>
+                    <p><strong>Complex Multi-Service:</strong> Use ADF + Databricks</p>
+                    <p><strong>Stream Processing:</strong> Use Databricks Streaming (internally)</p>
+
+                    <p><strong>Interview Answer:</strong> "ADF orchestrates pipelines - it schedules, manages dependencies, and integrates multiple services. Databricks executes computations. In production, ADF typically calls Databricks notebooks via Execute Databricks Notebook activities, providing the scheduling and orchestration layer while Databricks handles the actual data transformation."</p>
+                `
+            },
+            14: {
+                title: "Databricks Pipeline Automation",
+                subtitle: "Jobs, Workflows, Parameterized Notebooks, ADF Integration",
+                time: "6 min read",
+                keyPoints: ["Databricks Jobs native", "Workflows DAG-based", "Parameterized notebooks"],
+                content: `
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">3</div>
+                            <div class="stat-label">Methods</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">Automation</div>
+                            <div class="stat-label">Options</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">6 min</div>
+                            <div class="stat-label">Read Time</div>
+                        </div>
+                    </div>
+
+                    <h2>Method 1: Databricks Jobs (Built-In)</h2>
+                    <p><strong>Advantages:</strong></p>
+                    <ul>
+                        <li>Native Databricks scheduling</li>
+                        <li>Automatic cluster creation (minimize idle)</li>
+                        <li>Built-in retry and notifications</li>
+                        <li>Simple monitoring</li>
+                    </ul>
+                    <p><strong>Use For:</strong> Simple scheduled jobs, straightforward dependencies</p>
+
+                    <h2>Method 2: Azure Data Factory Orchestration</h2>
+                    <p><strong>Advantages:</strong></p>
+                    <ul>
+                        <li>Complex multi-step orchestration</li>
+                        <li>Dependency management across services</li>
+                        <li>Advanced error handling</li>
+                        <li>Enterprise monitoring dashboard</li>
+                    </ul>
+                    <p><strong>Use For:</strong> Multi-service ETL, complex workflows</p>
+
+                    <h2>Method 3: Databricks Workflows (Modern)</h2>
+                    <p><strong>Advantages:</strong></p>
+                    <ul>
+                        <li>DAG-based task dependencies</li>
+                        <li>Fine-grained control</li>
+                        <li>Better error handling and partial reruns</li>
+                        <li>Modern alternative to Jobs</li>
+                    </ul>
+
+                    <h2>Advanced: Parameterized Pipelines</h2>
+                    <p>Pass parameters from ADF or Jobs to notebooks for flexible execution:</p>
+                    <ul>
+                        <li>environment: dev/prod</li>
+                        <li>date: execution date</li>
+                        <li>data_source: which system to read from</li>
+                    </ul>
+
+                    <p><strong>Interview Answer:</strong> "Databricks offers native Jobs for simple scheduling. For complex multi-service orchestration, we use ADF which calls Databricks notebooks via Execute Databricks Notebook activities. We parameterize notebooks to handle different environments and dates, making the same pipeline reusable across dev/prod."</p>
+                `
+            },
+            15: {
+                title: "SQL Optimization Techniques",
+                subtitle: "Real-World Scenarios - Aggregation, Join Explosion, Subqueries",
+                time: "6 min read",
+                keyPoints: ["Aggregate early", "Avoid cursors", "Predicate pushdown"],
+                content: `
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">3</div>
+                            <div class="stat-label">Scenarios</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">Real-World</div>
+                            <div class="stat-label">Examples</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">6 min</div>
+                            <div class="stat-label">Read Time</div>
+                        </div>
+                    </div>
+
+                    <h2>Scenario 1: Slow Aggregation Query</h2>
+                    <p><strong>SLOW: 2 minutes</strong><br>
+                    GROUP BY without index on filter column</p>
+                    <p><strong>OPTIMIZED: 5 seconds (24x faster)</strong><br>
+                    Added index on (order_date, customer_id)</p>
+
+                    <h2>Scenario 2: JOIN Explosion</h2>
+                    <p><strong>SLOW: 100M rows instead of expected 10M</strong><br>
+                    WHERE clause applied AFTER joins</p>
+                    <p><strong>OPTIMIZED: Process 1M rows instead of 100M</strong><br>
+                    Apply WHERE clause BEFORE joins (predicate pushdown)</p>
+
+                    <h2>Scenario 3: Correlated Subquery (N+1 Problem)</h2>
+                    <p><strong>TERRIBLE: 1 million subqueries executed**</strong><br>
+                    Subquery for each row in outer query</p>
+                    <p><strong>OPTIMIZED: Single pass with LEFT JOIN**</strong><br>
+                    Aggregate first, then join once</p>
+
+                    <h2>Key Optimization Principles</h2>
+                    <ul>
+                        <li>Filter first (reduce rows early)</li>
+                        <li>Aggregate before joins (smaller datasets)</li>
+                        <li>Use set-based operations (not cursors)</li>
+                        <li>Apply WHERE before GROUP BY when possible</li>
+                        <li>Join order matters (small to large)</li>
+                    </ul>
+
+                    <p><strong>Interview Answer:</strong> "I optimize by filtering as early as possible - applying WHERE before JOINs and GROUP BY. I aggregate before joining to reduce data volume. I avoid cursors and use set-based operations. For slow queries, I analyze execution plans to find full scans and add indexes on filtered columns. The principle is: reduce data volume at each step."</p>
+                `
+            },
+            16: {
+                title: "Clustering Decision Framework",
+                subtitle: "How to Determine If Clustering Helps - 15-20x Improvement Typical",
+                time: "5 min read",
+                keyPoints: ["Identify slow queries", "Analyze skew", "Measure improvement"],
+                content: `
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">15-20x</div>
+                            <div class="stat-label">Improvement</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">Proven</div>
+                            <div class="stat-label">Approach</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">5 min</div>
+                            <div class="stat-label">Read Time</div>
+                        </div>
+                    </div>
+
+                    <h2>Step-by-Step Decision Framework</h2>
+
+                    <h3>Step 1: Identify Slow Queries</h3>
+                    <p>Find queries returning 500K+ rows in >30 seconds</p>
+
+                    <h3>Step 2: Analyze Data Distribution</h3>
+                    <p>Check how many files and rows for frequently queried values</p>
+                    <ul>
+                        <li>Customer X has 2M rows scattered across 500 files?</li>
+                        <li>→ Clustering by customer_id will help</li>
+                    </ul>
+
+                    <h3>Step 3: Check for Data Skew</h3>
+                    <p>Some keys have millions of rows, others have hundreds?</p>
+                    <ul>
+                        <li>And frequently queried by that key?</li>
+                        <li>→ Clustering is PERFECT</li>
+                    </ul>
+
+                    <h3>Step 4: Apply Clustering</h3>
+                    <p>Enable Liquid Clustering on write with target columns</p>
+
+                    <h3>Step 5: Measure Improvement</h3>
+                    <p>Compare before vs. after: 45 seconds → 2-3 seconds (15-20x faster)</p>
+
+                    <h2>Decision Flowchart</h2>
+                    <p>Q1: Do you filter frequently on specific columns?</p>
+                    <p>→ If NO: Don't cluster</p>
+                    <p>Q2: Is data volume > 1 GB?</p>
+                    <p>→ If NO: Don't cluster</p>
+                    <p>Q3: Is data naturally skewed along clustering key?</p>
+                    <p>→ If NO: Partitioning might be better</p>
+                    <p>Q4: Experiencing slow queries despite indexes?</p>
+                    <p>→ If YES: APPLY CLUSTERING</p>
+
+                    <p><strong>Interview Answer:</strong> "I identify clustering opportunities by looking at slow queries, analyzing file distribution, and checking for data skew. If a cluster key like customer_id has millions of rows scattered across many files, clustering consolidates them so queries access fewer files. I've seen 15-20x improvements on real datasets."</p>
+                `
+            },
+            17: {
+                title: "SQL Troubleshooting Steps",
+                subtitle: "Step-by-Step Approach - Execution Plan, Statistics, Bottleneck ID",
+                time: "7 min read",
+                keyPoints: ["CPU vs I/O vs Memory vs Network", "Client statistics", "Bottleneck identification"],
+                content: `
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">5</div>
+                            <div class="stat-label">Steps</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">Deep Dive</div>
+                            <div class="stat-label">Methodology</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">7 min</div>
+                            <div class="stat-label">Read Time</div>
+                        </div>
+                    </div>
+
+                    <h2>Step 1: Capture the Slow Query</h2>
+                    <p>In SQL Server SSMS: Ctrl+M for Actual Execution Plan</p>
+
+                    <h2>Step 2: Analyze Execution Plan</h2>
+                    <p><strong>Red Flags:</strong></p>
+                    <ul>
+                        <li>Full Table Scan → Add/improve index</li>
+                        <li>Sort with spill → Add index on sort column</li>
+                        <li>Hash Match with spill → Increase memory</li>
+                        <li>Nested Loop (large inner) → Use hash join</li>
+                    </ul>
+
+                    <h2>Step 3: Check Client Statistics</h2>
+                    <p>SSMS: Query → Include Client Statistics (Ctrl+Shift+S)</p>
+                    <p><strong>Key Metrics:</strong></p>
+                    <ul>
+                        <li>Execution Time: 45 seconds</li>
+                        <li>Network Wait: 40 seconds (bottleneck!)</li>
+                        <li>Rows Affected: 500,000 (returning too much?)</li>
+                        <li>Network Bytes: 200 MB</li>
+                    </ul>
+
+                    <h2>Step 4: Identify Bottleneck Type</h2>
+
+                    <h3>CPU-Bound</h3>
+                    <p><strong>Symptoms:</strong> High CPU time vs. elapsed time</p>
+                    <p><strong>Solutions:</strong> Better index, better algorithm, reduce data</p>
+
+                    <h3>I/O-Bound</h3>
+                    <p><strong>Symptoms:</strong> High disk read/write time</p>
+                    <p><strong>Solutions:</strong> Add index, increase buffer pool, partition table</p>
+
+                    <h3>Memory-Bound</h3>
+                    <p><strong>Symptoms:</strong> Execution plan shows "Sort Spill", "Hash Spill"</p>
+                    <p><strong>Solutions:</strong> Increase memory, reduce data, use temp tables</p>
+
+                    <h3>Network-Bound</h3>
+                    <p><strong>Symptoms:</strong> High client-server round trips, large result sets</p>
+                    <p><strong>Solutions:</strong> SELECT only needed columns, implement pagination</p>
+
+                    <h2>Step 5: Implement & Measure</h2>
+                    <p>Apply optimization, re-run, compare metrics</p>
+
+                    <p><strong>Interview Answer:</strong> "I start by capturing the execution plan. I look for full scans, spills, and nested loops. Then I check client statistics to identify the bottleneck - is it CPU, I/O, memory, or network? For network-bound queries, I reduce result set. For memory-bound, I add filters. For I/O-bound, I add indexes. Then I measure improvement and iterate."</p>
+                `
+            },
+            18: {
+                title: "Databricks Table Types",
+                subtitle: "Managed, External, Temporary, Global Temporary - Comparison",
+                time: "6 min read",
+                keyPoints: ["Managed: Databricks controlled", "External: user controlled", "Temp: session-scoped"],
+                content: `
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">4</div>
+                            <div class="stat-label">Types</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">Detailed</div>
+                            <div class="stat-label">Comparison</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">6 min</div>
+                            <div class="stat-label">Read Time</div>
+                        </div>
+                    </div>
+
+                    <h2>1. MANAGED TABLES</h2>
+                    <p><strong>Characteristics:</strong></p>
+                    <ul>
+                        <li>Data location: Databricks-controlled (default /user/hive/warehouse/)</li>
+                        <li>Ownership: Databricks owns both metadata AND data</li>
+                        <li>Deletion: DROP TABLE deletes both</li>
+                        <li>Risk: Accidental DROP deletes all data</li>
+                    </ul>
+                    <p><strong>When to Use:</strong> Temporary tables, development, testing</p>
+
+                    <h2>2. EXTERNAL TABLES</h2>
+                    <p><strong>Characteristics:</strong></p>
+                    <ul>
+                        <li>Data location: User-controlled (S3, ADLS, GCS)</li>
+                        <li>Ownership: User owns data, Databricks owns metadata</li>
+                        <li>Deletion: DROP TABLE deletes metadata only, data remains</li>
+                        <li>Benefit: Data persists independently</li>
+                    </ul>
+                    <p><strong>When to Use:</strong> Production data lakes, shared systems</p>
+
+                    <h2>3. TEMPORARY TABLES / VIEWS</h2>
+                    <p><strong>Characteristics:</strong></p>
+                    <ul>
+                        <li>Scope: Session-specific (current notebook only)</li>
+                        <li>Lifetime: Exists only during active session</li>
+                        <li>Storage: In memory</li>
+                        <li>Visibility: Not visible to other sessions</li>
+                    </ul>
+                    <p><strong>When to Use:</strong> Intermediate calculations, debugging</p>
+
+                    <h2>4. GLOBAL TEMPORARY VIEWS</h2>
+                    <p><strong>Characteristics:</strong></p>
+                    <ul>
+                        <li>Scope: Cluster-scoped (all sessions on cluster)</li>
+                        <li>Namespace: Special global_temp schema</li>
+                        <li>Lifetime: Until cluster termination</li>
+                        <li>Visibility: All users on cluster see it</li>
+                    </ul>
+                    <p><strong>When to Use:</strong> Sharing results across notebooks, collaborative analysis</p>
+
+                    <h2>Comparison Matrix</h2>
+                    <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                        <tr style="border-bottom: 1px solid #2d3748;">
+                            <td style="padding: 10px;"><strong>Aspect</strong></td>
+                            <td style="padding: 10px;"><strong>Managed</strong></td>
+                            <td style="padding: 10px;"><strong>External</strong></td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #2d3748;">
+                            <td style="padding: 10px;">Data Location</td>
+                            <td style="padding: 10px;">Databricks</td>
+                            <td style="padding: 10px;">User Controlled</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #2d3748;">
+                            <td style="padding: 10px;">Multi-session</td>
+                            <td style="padding: 10px;">YES</td>
+                            <td style="padding: 10px;">YES</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px;">Production Use</td>
+                            <td style="padding: 10px;">NO (risky)</td>
+                            <td style="padding: 10px;">YES</td>
+                        </tr>
+                    </table>
+
+                    <p><strong>Interview Answer:</strong> "For production, use External tables - they separate data from metadata, so if we drop the table, data persists in S3. Managed tables are for temporary work. Temp views are session-scoped for intermediate calculations. Global Temp views share across notebooks on same cluster."</p>
+                `
+            },
+            19: {
+                title: "Delta Tables",
+                subtitle: "ACID, Schema Enforcement, Time Travel, Change Data Feed",
+                time: "5 min read",
+                keyPoints: ["ACID transactions", "Schema enforcement", "Time travel capability"],
+                content: `
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">4</div>
+                            <div class="stat-label">Key Features</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">Safer</div>
+                            <div class="stat-label">than Parquet</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">5 min</div>
+                            <div class="stat-label">Read Time</div>
+                        </div>
+                    </div>
+
+                    <h2>What is a Delta Table?</h2>
+                    <p>Databricks enhancement over Parquet that adds ACID transactions, schema enforcement, time travel, and unified batch/streaming processing on cloud storage.</p>
+
+                    <h2>Feature 1: ACID Transactions</h2>
+                    <p><strong>Without Delta (Parquet):</strong> Two concurrent writes → data corruption risk</p>
+                    <p><strong>With Delta:</strong> ACID guarantees - either both succeed or both fail</p>
+
+                    <h2>Feature 2: Schema Enforcement</h2>
+                    <p><strong>Without Delta:</strong> String value inserted into INT column silently corrupts data</p>
+                    <p><strong>With Delta:</strong> Schema validation error - prevents corruption</p>
+
+                    <h2>Feature 3: Time Travel</h2>
+                    <p>View data as of specific timestamp: Read(timestampAsOf='2024-01-15 10:00:00')</p>
+                    <p>Restore table to previous version: RESTORE TABLE users TO VERSION 5</p>
+
+                    <h2>Feature 4: Change Data Feed (CDC)</h2>
+                    <p>Track what changed: inserts, updates, deletes</p>
+                    <p>Enables incremental processing and change capture</p>
+
+                    <h2>Delta vs Parquet Comparison</h2>
+                    <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                        <tr style="border-bottom: 1px solid #2d3748;">
+                            <td style="padding: 10px;"><strong>Feature</strong></td>
+                            <td style="padding: 10px;"><strong>Delta</strong></td>
+                            <td style="padding: 10px;"><strong>Parquet</strong></td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #2d3748;">
+                            <td style="padding: 10px;">ACID</td>
+                            <td style="padding: 10px;">✓</td>
+                            <td style="padding: 10px;">✗</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #2d3748;">
+                            <td style="padding: 10px;">Schema Enforcement</td>
+                            <td style="padding: 10px;">✓</td>
+                            <td style="padding: 10px;">✗</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px;">Time Travel</td>
+                            <td style="padding: 10px;">✓</td>
+                            <td style="padding: 10px;">✗</td>
+                        </tr>
+                    </table>
+
+                    <p><strong>Interview Answer:</strong> "Delta tables are safer than Parquet for production. They guarantee ACID transactions - two concurrent writes won't corrupt data. They enforce schema, so bad data is rejected. They support time travel for auditing and rollback. In my projects, we use Delta for all production tables for these reliability guarantees."</p>
+                `
+            },
+            20: {
+                title: "Small Files Problem",
+                subtitle: "Root Causes & Why It's a Problem - 20x Slower Queries",
+                time: "6 min read",
+                keyPoints: ["20x slower queries", "Streaming writes cause", "OPTIMIZE solution"],
+                content: `
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">20x</div>
+                            <div class="stat-label">Slower</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">Real</div>
+                            <div class="stat-label">Problem</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">6 min</div>
+                            <div class="stat-label">Read Time</div>
+                        </div>
+                    </div>
+
+                    <h2>Why Are Small Files Created?</h2>
+
+                    <h3>Cause 1: Streaming Writes</h3>
+                    <p>Every minute writes 1 new file (5MB each)</p>
+                    <p>After 1000 minutes: 1000 files × 5MB = 5GB in 1000 files!</p>
+
+                    <h3>Cause 2: Repartition on High-Cardinality</h3>
+                    <p>Repartition by customer_id with 1M unique values</p>
+                    <p>Creates 1M partitions, each tiny!</p>
+
+                    <h3>Cause 3: Uneven Partitioning</h3>
+                    <p>USA: 50GB → 1 large file, Luxembourg: 50KB → 1 tiny file</p>
+                    <p>Result: Mixed file sizes, inefficient scans</p>
+
+                    <h2>Why It's REALLY a Problem</h2>
+
+                    <h3>1. Query Latency</h3>
+                    <p>Each file requires: metadata read, connection, seek</p>
+                    <p>100 files × 10ms = 1 second just opening files</p>
+
+                    <h3>2. Memory Overhead</h3>
+                    <p>1000 file handles in memory = 100MB wasted</p>
+
+                    <h3>3. Network Overhead</h3>
+                    <p>1000 files = 1000 S3 API calls vs. 10 calls for 10 large files</p>
+
+                    <h3>4. Shuffle Inefficiency</h3>
+                    <p>Many small partitions = many shuffle tasks, low CPU utilization</p>
+
+                    <h2>Real Benchmark: 1TB Dataset</h2>
+                    <ul>
+                        <li>1000 small files (1GB each): 45 seconds</li>
+                        <li>10 large files (100GB each): 2 seconds</li>
+                        <li>Difference: 22x faster with large files!</li>
+                    </ul>
+
+                    <p><strong>Interview Answer:</strong> "Small files problem impacts query performance significantly - 20x slowdown is common. It happens when streaming writes one file per minute, or when partitioning by high-cardinality columns. Each file adds network overhead and memory. Solution is auto-optimize on write or manually running OPTIMIZE command."</p>
+                `
+            },
+            21: {
+                title: "OPTIMIZE Command",
+                subtitle: "How It Works, When to Run, Cost-Benefit Analysis, 17x Speedup",
+                time: "7 min read",
+                keyPoints: ["Consolidates small files", "Cost-benefit tradeoff", "Auto-optimize option"],
+                content: `
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">17x</div>
+                            <div class="stat-label">Typical Speedup</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">Strategic</div>
+                            <div class="stat-label">File Management</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">7 min</div>
+                            <div class="stat-label">Read Time</div>
+                        </div>
+                    </div>
+
+                    <h2>What OPTIMIZE Actually Does</h2>
+                    <p>Consolidates small Parquet files into larger, more efficient files.</p>
+
+                    <h2>How OPTIMIZE Works (Internally)</h2>
+
+                    <h3>Phase 1: Analysis</h3>
+                    <p>Analyzes current file sizes, partitions, memory available, target size (128MB default)</p>
+
+                    <h3>Phase 2: Grouping</h3>
+                    <p>Decides which files to merge based on cost-benefit</p>
+
+                    <h3>Phase 3: Merging</h3>
+                    <p>Reads files, repartitions by Z-order key, writes as single large file, deletes old files</p>
+
+                    <h2>Example Transformation</h2>
+                    <p><strong>BEFORE:</strong> file_1.parquet (5MB), file_2.parquet (8MB), file_3.parquet (3MB), file_4.parquet (4MB), file_5.parquet (50MB)</p>
+                    <p><strong>AFTER:</strong> compacted_file_1.parquet (20MB), file_5.parquet (50MB)</p>
+                    <p>Result: 5 files → 2 files, 60% overhead reduction</p>
+
+                    <h2>Why OPTIMIZE Doesn't Merge Everything</h2>
+
+                    <h3>Limitation 1: Cost-Benefit</h3>
+                    <p>Cost of merging 5MB = 1 min, but saving < 100 seconds total benefit</p>
+                    <p>Cost of merging 100KB = 1 min, saving < 10 seconds</p>
+                    <p>Result: Very small files remain (not worth merging)</p>
+
+                    <h3>Limitation 2: ZORDER Alignment</h3>
+                    <p>Won't merge if breaks Z-order alignment for multi-column filters</p>
+
+                    <h3>Limitation 3: Streaming Data</h3>
+                    <p>Won't merge files still being written (prevents locks)</p>
+
+                    <h2>When to Run OPTIMIZE</h2>
+                    <ul>
+                        <li>After heavy INSERT/APPEND operations</li>
+                        <li>Before critical reports/dashboards</li>
+                        <li>Weekly maintenance for production</li>
+                        <li>After ZORDER operations</li>
+                    </ul>
+
+                    <h2>Better Solution: Auto-Optimize</h2>
+                    <p>Enable on table: Every write automatically optimizes + auto-compacts</p>
+                    <p>No manual OPTIMIZE needed!</p>
+
+                    <p><strong>Interview Answer:</strong> "OPTIMIZE consolidates small files into larger ones by analyzing, grouping, and merging. Typical results are 17x query speedup. However, it doesn't merge everything due to cost-benefit analysis. Better approach is enabling auto-optimize on write, which prevents small files from forming in the first place while minimizing overhead."</p>
+                `
+            },
+            22: {
+                title: "Cluster Manager Selection",
+                subtitle: "Decision Framework, Configuration, Real-World Leverage",
+                time: "6 min read",
+                keyPoints: ["Standalone: simple", "YARN: shared", "K8s: cloud-native"],
+                content: `
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">3</div>
+                            <div class="stat-label">Managers</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">Decision</div>
+                            <div class="stat-label">Framework</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">6 min</div>
+                            <div class="stat-label">Read Time</div>
+                        </div>
+                    </div>
+
+                    <h2>Selection Decision Tree</h2>
+
+                    <h3>Q1: On-premises or Cloud?</h3>
+                    <p>→ On-premises: YARN or Standalone</p>
+                    <p>→ Cloud: Kubernetes preferred</p>
+
+                    <h3>Q2: Shared or Dedicated Cluster?</h3>
+                    <p>→ Shared (multi-tenant): YARN</p>
+                    <p>→ Dedicated (Spark only): Standalone or Kubernetes</p>
+
+                    <h3>Q3: Existing Infrastructure?</h3>
+                    <p>→ Hadoop Ecosystem: YARN (best integration)</p>
+                    <p>→ Kubernetes Already: Kubernetes</p>
+                    <p>→ Fresh Start: Kubernetes (cloud) or Standalone (on-prem)</p>
+
+                    <h3>Q4: Operational Complexity Tolerance?</h3>
+                    <p>→ Low: Standalone</p>
+                    <p>→ Medium: Kubernetes</p>
+                    <p>→ High: YARN</p>
+
+                    <h2>Standalone Cluster Manager</h2>
+                    <p><strong>When to Choose:</strong> Dedicated infrastructure, <100 nodes, operational simplicity</p>
+                    <p><strong>Setup:</strong> Master node + Worker nodes, direct connection</p>
+
+                    <h2>YARN Cluster Manager</h2>
+                    <p><strong>When to Choose:</strong> Multi-tenant, Hadoop ecosystem, >100 nodes</p>
+                    <p><strong>Features:</strong> Resource queues, priority management, enterprise scaling</p>
+
+                    <h2>Kubernetes Cluster Manager</h2>
+                    <p><strong>When to Choose:</strong> Cloud-first, cost optimization critical, auto-scaling needed</p>
+                    <p><strong>Features:</strong> Pod management, dynamic scaling, cloud integration</p>
+
+                    <h2>Real-World Leverage in Your Experience</h2>
+                    <p><strong>Honest Answer:</strong></p>
+                    <ul>
+                        <li>Cluster manager often pre-configured by infra team</li>
+                        <li>Most projects used Databricks (abstracts manager)</li>
+                        <li>I configured cluster specs: worker type, num_workers, auto-termination</li>
+                        <li>Made optimization decisions: memory/cores for workload, SPOT instances</li>
+                    </ul>
+
+                    <p><strong>If Had Full Choice:</strong></p>
+                    <ul>
+                        <li>Cloud: Kubernetes for cost & flexibility</li>
+                        <li>On-prem: YARN for Hadoop ecosystem</li>
+                        <li>Dedicated: Standalone for simplicity</li>
+                    </ul>
+
+                    <p><strong>Interview Answer:</strong> "Cluster manager choice depends on context. For cloud, Kubernetes provides best cost optimization with auto-scaling. For on-premises Hadoop environment, YARN. For dedicated Spark clusters, Standalone eliminates unnecessary complexity. In my experience, infrastructure team pre-configured this, but I optimized within constraints by tuning executor memory, cores, and instance types based on workload characteristics."</p>
+                `
+            }
+        };
+
+        // DOM Elements
+        const questionList = document.getElementById('questionList');
+        const contentArea = document.getElementById('contentArea');
+        const searchInput = document.getElementById('searchInput');
+        const currentTitle = document.getElementById('currentTitle');
+        const currentSubtitle = document.getElementById('currentSubtitle');
+        const progressFill = document.getElementById('progressFill');
+
+        let currentQuestion = null;
+
+        // Render question list
+        function renderQuestionList(filter = '') {
+            questionList.innerHTML = '';
+            Object.keys(allQuestions).forEach(id => {
+                const q = allQuestions[id];
+                if (q.title.toLowerCase().includes(filter.toLowerCase()) || 
+                    q.subtitle.toLowerCase().includes(filter.toLowerCase())) {
+                    const li = document.createElement('li');
+                    li.className = 'question-item' + (currentQuestion == id ? ' active' : '');
+                    li.innerHTML = `
+                        <div class="question-item-number">Q${id}</div>
+                        <div class="question-item-title">${q.title}</div>
+                        <div class="question-item-time">${q.time}</div>
+                    `;
+                    li.onclick = () => selectQuestion(id);
+                    questionList.appendChild(li);
+                }
+            });
+        }
+
+        // Select question
+        function selectQuestion(id) {
+            currentQuestion = id;
+            const q = allQuestions[id];
+            
+            currentTitle.textContent = q.title;
+            currentSubtitle.textContent = q.subtitle;
+            
+            let html = `
+                <div class="key-points">
+                    <h3>Key Points</h3>
+                    <ul>
+            `;
+            q.keyPoints.forEach(point => {
+                html += `<li>${point}</li>`;
+            });
+            html += `</ul></div>`;
+            html += q.content;
+            
+            contentArea.innerHTML = html;
+            
+            // Update progress
+            const progress = (id / 22) * 100;
+            progressFill.style.width = progress + '%';
+            
+            // Update active state
+            document.querySelectorAll('.question-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelectorAll('.question-item')[id - 1]?.classList.add('active');
+            
+            // Scroll to top
+            contentArea.scrollTop = 0;
+        }
+
+        // Search functionality
+        searchInput.addEventListener('input', (e) => {
+            renderQuestionList(e.target.value);
+        });
+
+        // Initialize
+        renderQuestionList();
+        selectQuestion(1);
+    </script>
+</body>
+</html>
